@@ -29,9 +29,11 @@ header nav a{text-decoration:none;color:var(--muted)}
 
 /* hero: a sheet coming out of the machine, typed live */
 .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:30px 0 10px}
-.sheet{position:relative;background:url(assets/papers/cream_laid.webp) top/100% auto;color:var(--ink);aspect-ratio:1/1.05;
-  padding:12% 11% 8%;box-shadow:0 30px 60px rgba(0,0,0,.5);transform:rotate(-1.2deg);font-family:type;font-size:clamp(20px,2.6vw,30px);line-height:1.9;white-space:pre-wrap}
-.sheet::after{content:"";position:absolute;inset:auto 0 -46px 0;height:120px;background:url(assets/img/hero_capsule.webp) center/cover;filter:drop-shadow(0 10px 12px rgba(0,0,0,.5));pointer-events:none}
+.machine{position:relative;transform:rotate(-1deg)}
+.sheet{position:relative;margin:0 6%;background:url(assets/papers/cream_laid.webp) top/100% auto;color:var(--ink);aspect-ratio:1/.95;
+  padding:12% 11% 8%;box-shadow:0 30px 60px rgba(0,0,0,.45);font-family:type;font-size:clamp(20px,2.6vw,30px);line-height:1.9;white-space:pre-wrap}
+/* the rail image: rail sits at 30.8% of its height; the sheet goes in behind it */
+.machine .rail{position:relative;display:block;width:100%;height:auto;margin-top:-13.3%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.45));pointer-events:none;-webkit-mask:linear-gradient(#000 72%,transparent);mask:linear-gradient(#000 72%,transparent)}
 .sheet .c{display:inline-block;width:.07em;height:1em;background:var(--ink);opacity:.4;vertical-align:-.1em;animation:b 1s steps(2) infinite}
 @keyframes b{50%{opacity:0}}
 h1{font-family:ruqaa;font-weight:400;font-size:clamp(54px,8vw,96px);line-height:1.1;margin:0 0 10px}
@@ -73,7 +75,7 @@ h2{font-family:ruqaa;font-weight:400;font-size:clamp(34px,4.6vw,48px);margin:0 0
 footer{border-top:1px solid rgba(241,232,210,.12);padding:22px 0 40px;color:var(--muted);font-size:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 @media (max-width:820px){
   .hero,.live{grid-template-columns:1fr}
-  .hero .sheet{order:2;margin-bottom:60px}
+  .hero .machine{order:2;margin-bottom:10px}
   .list{columns:1}
   header nav{display:none}
 }
@@ -95,7 +97,10 @@ footer{border-top:1px solid rgba(241,232,210,.12);padding:22px 0 40px;color:var(
       <a class="dl" id="dl" href="https://github.com/iegy/ala/releases/latest">نزّل التطبيق <small>أندرويد · مجاني</small></a>
       <div class="meta" id="ver">أندرويد ٨ أو أحدث. من غير إعلانات ومن غير حساب.</div>
     </div>
-    <div class="sheet" aria-label="سطر بيتكتب على الآلة"><span id="typed"></span><span class="c"></span></div>
+    <div class="machine">
+      <div class="sheet" aria-label="سطر بيتكتب على الآلة"><span id="typed"></span><span class="c"></span></div>
+      <img class="rail" src="assets/img/hero_capsule.webp" alt="">
+    </div>
   </div>
 
   <section id="live">
@@ -109,7 +114,7 @@ footer{border-top:1px solid rgba(241,232,210,.12);padding:22px 0 40px;color:var(
           <li><div><b>اختار الإيقاع</b><span>إيقاعك الحقيقي بوقفاتك، أو هادي، أو سريع، أو آلة قديمة.</span></div></li>
           <li><div><b>اقفله بكلمة سر لو حابب</b><span>الجواب كله جوه اللينك ومتشفّر، مش متخزن على أي سيرفر.</span></div></li>
         </ol>
-        <a class="try" id="demo" href="letter/#p.fVXdbtMwFH6VytxaVZP0N3e74I67cVcmlKVua9E6lZMxwTQJ0ZYxQGKPgEAImDbKNhDamyRvwzmOj9duLBd2fD6fn-_zT3zAnrPQ4yzNWHjAZtFMaBayaaT20ljLWcY4k-oZQKmYyai0fDC1GJTGdvZiIgDYT7QiRAs1ysYm7zBR2RamjKZSS1YCj6IMM85ELKPJUzGRmbAz2_IlJAuaQGgWxVKNIEm9xYGQHkkFQSrR02gC3lAumgqVGUxh_EBqEWcyQbdoL0sYqkpiJJ9oCeEmbjhJ9o1GVHDIGVTos_w7zORX0BVL6GpofUNr4bqjO3h-gd05BRVvqjzekdsTRV1-jd0lzZpRfkpmzTFauArHiH2g-GJOASX90-IjxX11cabuvDixM0ZG_otY3qJ7hqO3hJmsNSJapjsm6LML-kGp5y7whpObfI3WamMlzKSRU9uoeyM4_0uLWHOr5CCT8paAS1JR8sBRfd0r_-3oXbiMp25daElu7ecV0ftfyTNH9npdsJFfvKKEX7Azu_KJHM6oRrkiR8V7SkyUH0MbQxPWxuOLV2hk8czi5KPXfNEvteOBtYe2rfsqm6fuTpXTYlj-3FT75-7tWLrNW21s6lo2d0fAZQc5hP2gwT3ebHB_B_mF_Tb3AAm41-G-x_0W97s88HnQ5j2CwblJcMvCbYI7PPAs7BMcENzkXQt7PYIbFva41yK4beEOwV3u-wQHFm4SDBx7Fm4Q7BHs8zbB9yvyqhR1qxS1KhT5VYp6VYraVYqCCkUbe3dHUqdKUvN-SXA0YjgaDfimAn7eIRyiujlMKRwZFmuRxvgCgA1-7IH3MNjqdNHEf_4wkXhh4B0I4QoXi2Jp_l5DnUxNpvwc2spcBXwMzOOQKkw8FTFeqV0xwZq78HaMM3b4Dw">افتح جواب تجريبي</a>
+        <a class="try" id="demo" href="letter/#p.fVXLbtNAFP2VaNiOotjO07su2LEru1Ah150kI5JxNHapoKqECG15SfAJCISAKCW0BaH-if033DueO82DeuGx75k7554zLx-zpyz0OEszFh6zaTQVmoVsEqnDNNZymjHOpHoCUCqmMiojH0ItDspgN3s2FgAcJVoRooUaZiPDO0hUtoOU0URqyUrgQZQh41TEMho_FmOZCduzK58DWdAEQdMolmoIJPUWB0F6KBUMUomeRGPIhnLRRKjMYArHH0gt4kwmmBYdZglDV0mM4hMtYbgZNxgnR8YjOjjhDCr0Wf4devJraIpTaGoYfcPolWvOt_D8EpsLGlScVWW8pbRHipr8Bpsr6jVf-ZzCGhU1vPkSm_c0tJhRbql8Xnyg4l-dYlNyVnxcJct_kcANpQv8ek2YYa2RxpLuDUGf3aAfRD1zA281uc6XpP92EkynsVNbq1tWMhl_af5qboIcZCg3DFyRi1IHftVXs_LfTt6lY5y7eaEp2VjKa5L3v5ILJ_Zm1bCxX7wgwi_YmFX5RAkLqlHOyHnxjohJ8kN4RvAIG-POxdMztHhmccrRK7mYl9rvAxsP7LOaqyxP3e0q58Wo_Lnu9s_2wTh1i7dcW9QVNnc8IGUPNYT9oME93mxwfw_1hf029wAJuNfhvsf9Fve7PPB50OY9giG5SXDLwm2COzzwLOwTHBDc5F0Lez2CGxb2uNciuG3hDsFd7vsEBxZuEgwaexZuEOwR7PM2wXc78qocdasctSoc-VWOelWO2lWOggpHa2u3ZalTZal5hyXYFzHsiwa8UwGXdgg7qG52Ugr7hcVapDHe_BBDHrvn3Q92Ol0M8a4fJBJPC9z_IR6tM7M3BzqZGJ78Ap6lOQX4CzC_hFQh7UTEeJr2xRgr7sMfY5Sxk38">افتح جواب تجريبي</a>
       </div>
     </div>
   </section>
