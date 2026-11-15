@@ -72,6 +72,13 @@ h2{font-family:ruqaa;font-weight:400;font-size:clamp(34px,4.6vw,48px);margin:0 0
 .list p{color:var(--muted)}
 
 .end{text-align:center;padding:90px 0 60px}
+
+.apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px}
+.app{text-decoration:none;display:flex;flex-direction:column;gap:2px}
+.app img{width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:6px;box-shadow:0 10px 20px rgba(0,0,0,.35);margin-bottom:8px}
+.app b{font-weight:600;font-size:21px}
+.app span{color:var(--muted);font-size:17px;line-height:1.5}
+.app:hover b{text-decoration:underline;text-decoration-color:var(--brass)}
 footer{border-top:1px solid rgba(241,232,210,.12);padding:22px 0 40px;color:var(--muted);font-size:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 @media (max-width:820px){
   .hero,.live{grid-template-columns:1fr}
@@ -145,6 +152,19 @@ footer{border-top:1px solid rgba(241,232,210,.12);padding:22px 0 40px;color:var(
       <p><b>الآلة تكتب لوحدها.</b> الصق أي نص وسيبها تكتبه قدامك بالسرعة اللي تختارها.</p>
       <p><b>نور الأباجورة.</b> اكتب بالليل تحت لمبة دافية بتتحكم في زاويتها ومداها.</p>
       <p><b>PDF وصورة وطباعة.</b> صدّر الجواب بالورق والحبر زي ما شايفه بالظبط.</p>
+    </div>
+  </section>
+
+  <section id="apps">
+    <h2>من نفس الإيد</h2>
+    <p class="sub">تطبيقات تانية مجانية، من غير إعلانات ومن غير حسابات.</p>
+    <div class="apps">
+      <a class="app" href="https://iegy.net/work-hisn.html"><img src="assets/apps/hisn.webp" alt="" loading="lazy"><b>حصن</b><span>متصفح عربي يحجب الإعلانات والمتتبعات، لأندرويد وويندوز</span></a>
+      <a class="app" href="https://iegy.net/work-jisr.html"><img src="assets/apps/jisr.webp" alt="" loading="lazy"><b>جسر</b><span>انقل الملفات بين الأجهزة القريبة من غير إنترنت</span></a>
+      <a class="app" href="https://iegy.net/work-cassette.html"><img src="assets/apps/cassette.webp" alt="" loading="lazy"><b>كاسيت</b><span>مشغّل صوت وفيديو بشكل الكاسيت وشريط الـ VHS</span></a>
+      <a class="app" href="https://iegy.net/work-rafiqi-android.html"><img src="assets/apps/rafiqi.webp" alt="" loading="lazy"><b>رفيقي</b><span>القرآن والتفاسير والأذكار والصلاة والقبلة</span></a>
+      <a class="app" href="https://iegy.net/work-rifq.html"><img src="assets/apps/rifq.webp" alt="" loading="lazy"><b>رِفق</b><span>دعم نفسي بالعربي، من غير إنترنت خالص</span></a>
+      <a class="app" href="https://iegy.net/work-screenmo.html"><img src="assets/apps/screenmo.webp" alt="" loading="lazy"><b>سكرين مو</b><span>تصوير وتسجيل الشاشة على ويندوز بالعربي</span></a>
     </div>
   </section>
 

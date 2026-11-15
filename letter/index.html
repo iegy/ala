@@ -262,7 +262,7 @@ async function typeAll(){
   }
   caret.remove();
   if(L.seal!=null){
-    const w=makeSeal(L.seal,L.sd,L.sc,L.sk);w.classList.add("waxEnd");t.appendChild(w);
+    const w=makeSeal(L.seal,L.sd,L.sc,L.sk,L.sm);w.classList.add("waxEnd");t.appendChild(w);
     if(!skipping)await sleep(500);play("stamp",1);requestAnimationFrame(()=>w.classList.add("on"));
   }
   $("bar").style.display="none";$("done").style.display="flex";
@@ -275,10 +275,23 @@ function follow(el){const now=performance.now();if(now-lastScroll<250)return;las
 /* ---------- seals (grey masters tinted with the sender's colour) ---------- */
 function hex2rgb(h){h=(h||"#9a1915").replace("#","");const n=parseInt(h,16);return [(n>>16)&255,(n>>8)&255,n&255]}
 function mix(c,t,to){return c.map((v,i)=>Math.round(v+(to[i]-v)*t))}
-function makeSeal(text,design,color,kind){
+async function maskCanvas(code,col,shade,hi,kind){
+  const N=128,u=unb64(code);
+  const bytes=new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+  const m=document.createElement("canvas");m.width=m.height=N;const mc=m.getContext("2d"),img=mc.createImageData(N,N);
+  for(let i=0;i<N*N;i++){if((bytes[i>>3]>>(7-(i&7)))&1)img.data[i*4+3]=255}
+  mc.putImageData(img,0,0);
+  const tint=c=>{const t=document.createElement("canvas");t.width=t.height=N;const x=t.getContext("2d");x.drawImage(m,0,0);x.globalCompositeOperation="source-in";x.fillStyle=c;x.fillRect(0,0,N,N);return t};
+  const out=document.createElement("canvas");out.width=out.height=N*2;const o=out.getContext("2d");o.imageSmoothingQuality="high";
+  if(kind==="ink")o.drawImage(tint(col),0,0,N*2,N*2);
+  else{o.drawImage(tint(shade),2,3,N*2,N*2);o.drawImage(tint(hi),0,0,N*2,N*2)}
+  return out;
+}
+function makeSeal(text,design,color,kind,mask){
   design=design||"khatam";kind=kind||"wax";text=(text||"").trim();
+  const isImg=design==="image";
   const named=text&&design!=="ring";
-  const src=`../assets/seals/${design}_${kind}${named?"_t":""}.webp`;
+  const src=isImg?`../assets/seals/letters_${kind}_t.webp`:`../assets/seals/${design}_${kind}${named?"_t":""}.webp`;
   const d=document.createElement("div");d.className="tseal";
   d.style.setProperty("--m",`url(${src})`);d.style.setProperty("--sc",color||"#9a1915");
   const im=document.createElement("img");im.src=src;im.alt="";d.appendChild(im);
@@ -286,12 +299,18 @@ function makeSeal(text,design,color,kind){
     const rgb=hex2rgb(color),lum=(.3*rgb[0]+.59*rgb[1]+.11*rgb[2])/255;
     const t=document.createElement("span");t.textContent=text;
     const big=design==="letters",k={wax:.7,ink:.78,foil:.72}[kind]||.7,R=.4; // seal radius 0.4 of the box
-    const ty=big?50:50+.36*k*R*100,fs=(big?(text.length<=3?.6:.4):(text.length<=3?.5:.34))*k*R*100*(big?2.1:1);
+    const ty=big?50:50+(isImg?.5:.38)*k*R*100,fs=(big?(text.length<=3?.6:.4):(text.length<=3?.5:.34))*k*R*100*(big?2.1:isImg?1.4:1.15);
     t.style.setProperty("--ty",ty+"%");t.style.setProperty("--tf",fs+"cqw");
     if(kind==="ink"){t.style.setProperty("--tc",`rgba(${rgb},.85)`)}
     else{const hi=lum>.6?mix(rgb,.6,[0,0,0]):mix(rgb,.55,[255,255,255]),sh=mix(rgb,.6,[0,0,0]);
       t.style.setProperty("--tc",`rgba(${hi},.6)`);t.style.setProperty("--ts",`1px 1.5px 0 rgba(${sh},.6)`)}
     d.appendChild(t);
+  }
+  if(isImg&&mask){
+    const rgb=hex2rgb(color),k={wax:.7,ink:.78,foil:.72}[kind]||.7,R=.4,er=k*R*100,side=named?.95*er:1.45*er,cy=50-(named?.3*er:0);
+    const sh=mix(rgb,.6,[0,0,0]),hi=mix(rgb,.55,[255,255,255]);
+    maskCanvas(mask,`rgba(${rgb},.85)`,`rgba(${sh},.6)`,`rgba(${hi},.55)`,kind).then(cv=>{
+      cv.style.cssText=`position:absolute;width:${side}%;height:${side}%;left:${50-side/2}%;top:${cy-side/2}%`;d.appendChild(cv)}).catch(()=>{});
   }
   return d;
 }
@@ -319,7 +338,7 @@ function showEnvelope(meta){
   $("env").hidden=false;
   $("to").textContent=meta.to?`إلى ${meta.to}`:"جواب ليك";
   $("from").textContent=meta.from?`من ${meta.from}`:"";
-  $("seal").replaceChildren(makeSeal(meta.seal==null?"":meta.seal,meta.sd,meta.sc,meta.sk));
+  $("seal").replaceChildren(makeSeal(meta.seal==null?"":meta.seal,meta.sd,meta.sc,meta.sk,meta.sm));
 }
 
 async function main(){
